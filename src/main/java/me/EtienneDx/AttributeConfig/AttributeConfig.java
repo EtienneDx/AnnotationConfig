@@ -130,7 +130,7 @@ public class AttributeConfig
 			if(comments.containsKey(key))
 			{
 				String comment = "# " + comments.get(key);
-				file.write(comment + "\n");
+				file.append(comment + "\n");
 			}
 			
 			String s = (new Yaml()).dump(object);
@@ -139,7 +139,7 @@ public class AttributeConfig
 				s = "\n" + getIndented(s, tabCount);
 			}
 			String[] str = key.split("\\.");
-			file.write(getIndented(str[str.length - 1], tabCount) + s);
+			file.append(getIndented(str[str.length - 1], tabCount) + s);
 		}
 		catch (IOException e)
 		{
@@ -164,7 +164,7 @@ public class AttributeConfig
 			return false;
 		try
 		{
-			file.write(cfgSection.getName() + ":");
+			file.append(cfgSection.getName() + ":");
 		}
 		catch (IOException e)
 		{
@@ -192,7 +192,7 @@ public class AttributeConfig
 		{
 			try
 			{
-				file.write("  ");// use double space as tab
+				file.append("  ");// use double space as tab
 			}
 			catch (IOException e)
 			{
