@@ -26,21 +26,21 @@ public class AttributeConfig
 		
 		for(Field f : cls.getFields())
 		{
-			String target = "";
 			if(f.isAnnotationPresent(ConfigField.class))
 			{
+				String target = "";
 				ConfigField cf = f.getAnnotation(ConfigField.class);
 				target = cf.name();
+				if(target.isEmpty())
+					target = f.getName();
+				
+				try
+				{
+					f.set(this, config.get(target, f.get(this)));
+				} 
+				catch (IllegalArgumentException e) { }
+				catch (IllegalAccessException e) { }
 			}
-			if(target.isEmpty())
-				target = f.getName();
-			
-			try
-			{
-				f.set(this, config.get(target, f.get(this)));
-			} 
-			catch (IllegalArgumentException e) { }
-			catch (IllegalAccessException e) { }
 		}
 	}
 	
@@ -61,21 +61,21 @@ public class AttributeConfig
 		
 		for(Field f : cls.getFields())
 		{
-			String target = "";
 			if(f.isAnnotationPresent(ConfigField.class))
 			{
+				String target = "";
 				ConfigField cf = f.getAnnotation(ConfigField.class);
 				target = cf.name();
+				if(target.isEmpty())
+					target = f.getName();
+				
+				try
+				{
+					config.set(target, f.get(this));
+				} 
+				catch (IllegalArgumentException e) { }
+				catch (IllegalAccessException e) { }
 			}
-			if(target.isEmpty())
-				target = f.getName();
-			
-			try
-			{
-				config.set(target, f.get(this));
-			} 
-			catch (IllegalArgumentException e) { }
-			catch (IllegalAccessException e) { }
 		}
 		
 		try
