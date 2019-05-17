@@ -4,7 +4,7 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
-@interface ConfigField
+public @interface ConfigField
 {
 	String name() default "";
 }
