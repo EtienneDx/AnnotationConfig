@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -120,7 +121,8 @@ public class AttributeConfig
             
             FileWriter file = new FileWriter(path);
             
-            configString = configString.replaceAll("^ *?(?:.*?)_COMMENT: ?(.*?)$", "# $1");
+            configString = Pattern.compile("^ *?(?:.*?)_COMMENT: ?(.*?)$", Pattern.MULTILINE).matcher(configString).replaceAll("# $1");
+            //configString = configString.replaceAll("^ *?(?:.*?)_COMMENT: ?(.*?)$", "# $1");
             file.write(configString);
             
             file.close();
