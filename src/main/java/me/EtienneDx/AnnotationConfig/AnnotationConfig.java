@@ -155,7 +155,7 @@ public class AnnotationConfig
             {
             	String comm = matcher.group(1);
             	comm = "# " + comm.replace("\\n", "\\n# ");
-            	matcher.appendReplacement(newConfig, comm);
+            	matcher.appendReplacement(newConfig, Matcher.quoteReplacement(comm));
             }
             matcher.appendTail(newConfig);
             configString = newConfig.toString();
