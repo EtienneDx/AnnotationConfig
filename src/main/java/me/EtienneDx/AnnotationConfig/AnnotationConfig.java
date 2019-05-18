@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -146,10 +147,24 @@ public class AnnotationConfig
 			
             String configString = config.saveToString();//.save(path);
             
-            FileWriter file = new FileWriter(path);
+            Matcher matcher = Pattern.compile("\\n? *?(?:.*?)_COMMENT: ?(.*)\\n[^:]*?:", Pattern.DOTALL).matcher(configString);
             
-            configString = Pattern.compile("^ *?(?:.*?)_COMMENT: ?(.*?)$", Pattern.MULTILINE).matcher(configString).replaceAll("# $1");
+            StringBuffer newConfig = new StringBuffer();
+            
+            while(matcher.find())
+            {
+            	String comm = matcher.group(1);
+            	comm = "# " + comm.replace("\\n", "\\n# ");
+            	matcher.appendReplacement(newConfig, comm);
+            }
+            matcher.appendTail(newConfig);
+            configString = newConfig.toString();
+            
+            //configString = matcher.replaceAll("# $1");
             //configString = configString.replaceAll("^ *?(?:.*?)_COMMENT: ?(.*?)$", "# $1");
+            
+            FileWriter file = new FileWriter(path);
+            		
             file.write(configString);
             
             file.close();
