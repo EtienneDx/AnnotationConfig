@@ -39,7 +39,7 @@ public class AnnotationConfig
 				sb.append(s);
 			}
 			reader.close();
-			strConfig = Pattern.compile("\\r?\\n?#[^\\r\\n]*").matcher(sb.toString()).replaceAll("");
+			strConfig = Pattern.compile("\\r?\\n? *?#[^\\r\\n]*").matcher(sb.toString()).replaceAll("");
 			while(strConfig.startsWith("\n"))
 				strConfig = strConfig.substring(1);
 			strConfig = strConfig.replaceAll("\\n+", "\n");
@@ -147,15 +147,17 @@ public class AnnotationConfig
 			
             String configString = config.saveToString();//.save(path);
             
-            Matcher matcher = Pattern.compile("\\n? *?(?:.*?)_COMMENT: ?(.*)\\n([^:]*?:)", Pattern.DOTALL).matcher(configString);
+            Matcher matcher = Pattern.compile("(?:[A-Za-z0-9]*?)_COMMENT: ?(.*?)(\\n[^:\\n]*?:)", Pattern.DOTALL).matcher(configString);
             
             StringBuffer newConfig = new StringBuffer();
+            
+            //newConfig.append(configString.substring(0, matcher.regionStart()));
             
             while(matcher.find())
             {
             	String comm = matcher.group(1);
-            	comm = "# " + comm.replace("\\n", "\\n# ");
-            	comm += "\n" + matcher.group(2);
+            	comm = "# " + Pattern.compile("\n( *)").matcher(comm).replaceAll("\n$1# ");
+            	comm += matcher.group(2);
             	matcher.appendReplacement(newConfig, Matcher.quoteReplacement(comm));
             }
             matcher.appendTail(newConfig);
