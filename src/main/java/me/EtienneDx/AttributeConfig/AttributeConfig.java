@@ -76,11 +76,14 @@ public class AttributeConfig
 				target = cf.name();
 				if(target.isEmpty())
 					target = f.getName();
-				if(!cf.comment().isEmpty())
-					comments.put(target, cf.comment());
-				
 				try
 				{
+					if(!cf.comment().isEmpty())
+					{
+						comments.put(target, cf.comment());
+						config.set(target + "_COMMENT", cf.comment());
+					}
+				
 					config.set(target, f.get(this));
 				} 
 				catch (IllegalArgumentException e) { }
@@ -90,7 +93,7 @@ public class AttributeConfig
 		
 		try
         {
-			FileWriter file = new FileWriter(path);
+			/*FileWriter file = new FileWriter(path);
 			if(getClass().isAnnotationPresent(ConfigFile.class))
 			{
 				String header = getClass().getAnnotation(ConfigFile.class).header();
@@ -111,8 +114,16 @@ public class AttributeConfig
 				}
 			}
 			
-            //config.save(path);
-			file.close();
+            file.close();*/
+			
+            String configString = config.saveToString();//.save(path);
+            
+            FileWriter file = new FileWriter(path);
+            
+            configString = configString.replaceAll("^ *?(?:.*?)_COMMENT: ?(.*?)$", "# $1");
+            file.write(configString);
+            
+            file.close();
             return true;
         }
         catch (IOException exception) 
