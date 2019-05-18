@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>EtienneDx</groupId>
-	<artifactId>AttributeConfig</artifactId>
+	<artifactId>AnnotationConfig</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>AttributeConfig</name>
+	<name>AnnotationConfig</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
