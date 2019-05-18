@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -38,6 +39,13 @@ public class AnnotationConfig
 			}
 			reader.close();
 			strConfig = Pattern.compile("\n?#(.*?)\n?").matcher(sb.toString()).replaceAll("\n");
+			while(strConfig.startsWith("\n"))
+				strConfig = strConfig.substring(1);
+			strConfig = strConfig.replaceAll("\n+", "\n");
+			
+			PrintWriter minified = new PrintWriter(path + ".min.yml");
+			minified.print(strConfig);
+			minified.close();
 		}
 		catch (FileNotFoundException e) { }
 		catch (IOException e) { }
