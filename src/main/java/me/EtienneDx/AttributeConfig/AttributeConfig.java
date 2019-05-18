@@ -1,6 +1,9 @@
 package me.EtienneDx.AttributeConfig;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -10,6 +13,7 @@ import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.yaml.snakeyaml.Yaml;
 
@@ -27,7 +31,26 @@ public class AttributeConfig
 		if(path == null || path.isEmpty())
 			path = "config.yml";
 		this.path = path;
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(path));
+		String strConfig = "";
+		try
+		{
+			BufferedReader reader = new BufferedReader(new FileReader(path));
+			String s;
+			StringBuilder sb = new StringBuilder();
+			while((s = reader.readLine()) != null)
+			{
+				sb.append(s);
+			}
+			strConfig = Pattern.compile("\n?#(.*?)\n?").matcher(sb.toString()).replaceAll("\n");
+		}
+		catch (FileNotFoundException e) { }
+		catch (IOException e) { }
+		YamlConfiguration config = new YamlConfiguration();
+		try
+		{
+			config.loadFromString(strConfig);
+		}
+		catch (InvalidConfigurationException e1) { }
 		
 		Class<? extends AttributeConfig> cls = getClass();
 		
