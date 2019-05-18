@@ -147,7 +147,7 @@ public class AnnotationConfig
 			
             String configString = config.saveToString();//.save(path);
             
-            Matcher matcher = Pattern.compile("\\n? *?(?:.*?)_COMMENT: ?(.*)\\n[^:]*?:", Pattern.DOTALL).matcher(configString);
+            Matcher matcher = Pattern.compile("\\n? *?(?:.*?)_COMMENT: ?(.*)\\n([^:]*?:)", Pattern.DOTALL).matcher(configString);
             
             StringBuffer newConfig = new StringBuffer();
             
@@ -155,6 +155,7 @@ public class AnnotationConfig
             {
             	String comm = matcher.group(1);
             	comm = "# " + comm.replace("\\n", "\\n# ");
+            	comm += "\n" + matcher.group(2);
             	matcher.appendReplacement(newConfig, Matcher.quoteReplacement(comm));
             }
             matcher.appendTail(newConfig);
