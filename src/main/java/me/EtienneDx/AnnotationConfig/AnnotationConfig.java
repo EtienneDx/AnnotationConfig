@@ -36,13 +36,13 @@ public class AnnotationConfig
 			StringBuilder sb = new StringBuilder();
 			while((s = reader.readLine()) != null)
 			{
-				sb.append(s);
+				sb.append(s + "\n");
 			}
 			reader.close();
 			strConfig = Pattern.compile("\\r?\\n? *?#[^\\r\\n]*").matcher(sb.toString()).replaceAll("");
 			while(strConfig.startsWith("\n"))
 				strConfig = strConfig.substring(1);
-			strConfig = strConfig.replaceAll("\\n+", "\\n");
+			strConfig = strConfig.replaceAll("\n+", "\n");
 			
 			PrintWriter minified = new PrintWriter(path + ".min.yml");
 			minified.print(strConfig);
