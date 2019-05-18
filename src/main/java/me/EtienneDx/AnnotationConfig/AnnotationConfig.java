@@ -38,7 +38,7 @@ public class AnnotationConfig
 				sb.append(s);
 			}
 			reader.close();
-			strConfig = Pattern.compile("\n?#(.*?)\n?").matcher(sb.toString()).replaceAll("\n");
+			strConfig = Pattern.compile("\r?\n?#(.*)").matcher(sb.toString()).replaceAll("");
 			while(strConfig.startsWith("\n"))
 				strConfig = strConfig.substring(1);
 			strConfig = strConfig.replaceAll("\n+", "\n");
