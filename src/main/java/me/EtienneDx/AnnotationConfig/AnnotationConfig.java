@@ -44,9 +44,9 @@ public class AnnotationConfig
 				strConfig = strConfig.substring(1);
 			strConfig = strConfig.replaceAll("\n+", "\n");
 			
-			PrintWriter minified = new PrintWriter(path + ".min.yml");
+			/*PrintWriter minified = new PrintWriter(path + ".min.yml");
 			minified.print(strConfig);
-			minified.close();
+			minified.close();*/
 		}
 		catch (FileNotFoundException e) { }
 		catch (IOException e) { }
@@ -122,36 +122,18 @@ public class AnnotationConfig
 		
 		try
         {
-			/*FileWriter file = new FileWriter(path);
+			String configString = config.saveToString();//.save(path);
+			
 			if(getClass().isAnnotationPresent(ConfigFile.class))
 			{
 				String header = getClass().getAnnotation(ConfigFile.class).header();
 				if(!header.isEmpty())
-					file.write("# " + header.replace("\n", "\n# ") + "\n");
+					configString = "# " + header + "\n" + configString;
 			}
-			for(String s : config.getKeys(false))
-			{
-				if(config.isConfigurationSection(s))
-				{
-					if(!writeSection(config.getConfigurationSection(s), file, comments, 0));
-						return false;
-				}
-				else
-				{
-					if(!writeField(s, config.get(s), file, comments, 0))
-						return false;
-				}
-			}
-			
-            file.close();*/
-			
-            String configString = config.saveToString();//.save(path);
             
             Matcher matcher = Pattern.compile("(?:[A-Za-z0-9]*?)_COMMENT: ?(.*?)(\\n[^:\\n]*?:)", Pattern.DOTALL).matcher(configString);
             
             StringBuffer newConfig = new StringBuffer();
-            
-            //newConfig.append(configString.substring(0, matcher.regionStart()));
             
             while(matcher.find())
             {
@@ -162,9 +144,6 @@ public class AnnotationConfig
             }
             matcher.appendTail(newConfig);
             configString = newConfig.toString();
-            
-            //configString = matcher.replaceAll("# $1");
-            //configString = configString.replaceAll("^ *?(?:.*?)_COMMENT: ?(.*?)$", "# $1");
             
             FileWriter file = new FileWriter(path);
             		
@@ -178,13 +157,4 @@ public class AnnotationConfig
         	return false;
 		}
 	}
-
-	/*private String getIndented(String s, int tabCount)
-	{
-		String tb = "";
-		for(int i = 0; i < tabCount; i++)
-			tb += "  ";
-		s = tb + s.replace("\r?\n", "\n" + tb);
-		return s;
-	}*/
 }
