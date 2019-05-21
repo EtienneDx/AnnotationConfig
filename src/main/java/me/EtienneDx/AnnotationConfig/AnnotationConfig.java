@@ -1,6 +1,7 @@
 package me.EtienneDx.AnnotationConfig;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -144,6 +145,11 @@ public class AnnotationConfig
             }
             matcher.appendTail(newConfig);
             configString = newConfig.toString();
+            
+            File f = new File(path).getParentFile();
+            
+            if(f != null)
+            	f.mkdirs();
             
             FileWriter file = new FileWriter(path);
             		
