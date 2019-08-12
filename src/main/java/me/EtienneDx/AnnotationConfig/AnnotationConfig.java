@@ -116,8 +116,8 @@ public class AnnotationConfig
 				
 					config.set(target, f.get(this));
 				} 
-				catch (IllegalArgumentException e) { }
-				catch (IllegalAccessException e) { }
+				catch (IllegalArgumentException e) { return false; }
+				catch (IllegalAccessException e) { return false; }
 			}
 		}
 		
