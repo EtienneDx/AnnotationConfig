@@ -80,9 +80,9 @@ public class AnnotationConfig
 		}
 	}
 	
-	public void saveConfig()
+	public boolean saveConfig()
 	{
-		saveConfig(this.path);
+		return saveConfig(this.path);
 	}
 	
 	public boolean saveConfig(String path)
