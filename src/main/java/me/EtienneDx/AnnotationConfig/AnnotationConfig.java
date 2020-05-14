@@ -128,8 +128,13 @@ public class AnnotationConfig
 			if(getClass().isAnnotationPresent(ConfigFile.class))
 			{
 				String header = getClass().getAnnotation(ConfigFile.class).header();
+				String headerS = "";
 				if(!header.isEmpty())
-					configString = "# " + header + "\n" + configString;
+				{
+					for(String s : header.split("\n"))
+					configString = "# " + s + "\n";
+				}
+				configString = headerS + configString;
 			}
             
             Matcher matcher = Pattern.compile("(?:[A-Za-z0-9]*?)_COMMENT: ?(.*?)(\\n[^:\\n]*?:)", Pattern.DOTALL).matcher(configString);
