@@ -132,7 +132,7 @@ public class AnnotationConfig
 				if(!header.isEmpty())
 				{
 					for(String s : header.split("\n"))
-					configString = "# " + s + "\n";
+						headerS += "# " + s + "\n";
 				}
 				configString = headerS + configString;
 			}
