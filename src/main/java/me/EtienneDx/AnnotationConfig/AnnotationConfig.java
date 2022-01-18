@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -93,8 +91,6 @@ public class AnnotationConfig
 		
 		YamlConfiguration config = new YamlConfiguration();
 		
-		HashMap<String, String> comments = new HashMap<String, String>();
-		
 		Class<? extends AnnotationConfig> cls = getClass();
 		
 		for(Field f : cls.getFields())
@@ -110,8 +106,7 @@ public class AnnotationConfig
 				{
 					if(!cf.comment().isEmpty())
 					{
-						comments.put(target, cf.comment());
-						config.set(target + "_COMMENT", cf.comment());
+						config.set(target + "_COMMENT", cf.comment().replaceAll(":", "{{{REPLACE_ME_WITH_DOUBLE_DOTS}}}"));
 					}
 				
 					config.set(target, f.get(this));
@@ -144,7 +139,7 @@ public class AnnotationConfig
             while(matcher.find())
             {
             	String comm = matcher.group(1);
-            	comm = "# " + Pattern.compile("\n( *)").matcher(comm).replaceAll("\n$1# ");
+            	comm = "# " + Pattern.compile("\n( *)").matcher(comm).replaceAll("\n$1# ").replaceAll("\\{\\{\\{REPLACE_ME_WITH_DOUBLE_DOTS\\}\\}\\}", ":");
             	comm += matcher.group(2);
             	matcher.appendReplacement(newConfig, Matcher.quoteReplacement(comm));
             }
